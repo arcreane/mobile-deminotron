@@ -1,3 +1,3 @@
-function WinRate(){
-    
+function WinRate(nbparties , nbvictoires){
+    return nbparties/nbvictoires;
 }
