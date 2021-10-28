@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
-import bcrypt from 'react-native-bcrypt';
 
 import TopBarre from '../Components/TopBarre';
 import DemineurPage from '../Pages/DemineurPage';
 import ShopPage from '../Pages/ShopPage';
 import StatPage from '../Pages/StatPage';
+import ProfilPage from '../Pages/ProfilPage';
 
 function MainPage({ navigation, route }) {
 
@@ -24,6 +24,7 @@ function MainPage({ navigation, route }) {
     var [demineur, setDemineur] = useState(true);
     var [stat, setStat] = useState(false);
     var [shop, setShop] = useState(false);
+    var [profil, setProfil] = useState(false);
 
     useEffect(() => {
         if(toLoad == "demineur"){
@@ -34,6 +35,9 @@ function MainPage({ navigation, route }) {
         }
         else if(toLoad == "stat"){
             LoadStat()
+            
+        }else if(toLoad == "profil"){
+            LoadProfil()
         }
     }, [toLoad])
     
@@ -71,6 +75,10 @@ function MainPage({ navigation, route }) {
             return(
                 <StatPage navigation={navigation}></StatPage>
             );
+        }else if(profil){
+            return(
+                <ProfilPage/>
+            );
         }else{
             return(
                 <View></View>
@@ -99,6 +107,9 @@ function MainPage({ navigation, route }) {
                     <TouchableOpacity activeOpacity={1} onPress={() => LoadStat()}>
                         <Image style={{height: 40, width: 40, opacity: 0.6, backgroundColor: 'rgba(255, 255, 255, 0)', marginTop: 'auto', marginBottom: 'auto'}} source={require('../Images/StatLogo.png')}/>
                     </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={1} onPress={() => LoadProfil()}>
+                        <Image style={{height: 40, width: 40, opacity: 0.6, backgroundColor: 'rgba(255, 255, 255, 0)', marginTop: 'auto', marginBottom: 'auto'}} source={require('../Images/ProfilLogo.png')}/>
+                    </TouchableOpacity>
                 </View>
             </View>
             
@@ -109,17 +120,27 @@ function MainPage({ navigation, route }) {
             setShop(true)
             setDemineur(false)
             setStat(false)
+            setProfil(false)
         }
 
         function LoadDemineur(){
             setShop(false)
             setDemineur(true)
             setStat(false)
+            setProfil(false)
         }
         function LoadStat(){
             setShop(false)
             setDemineur(false)
             setStat(true)
+            setProfil(false)
+        }
+
+        function LoadProfil(){
+            setShop(false)
+            setDemineur(false)
+            setStat(false)
+            setProfil(true)
         }
     }
 
