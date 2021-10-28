@@ -1,4 +1,5 @@
 import React from 'react';
+import Demineur from '../Components/Demineur';
 import { StyleSheet, View, Text } from 'react-native';
 
 
@@ -7,7 +8,7 @@ function DemineurPage({ navigation }) {
         return (
 
             <View style={{position: 'absolute', top: '15%', left: '10%'}}>   
-              <Text>Démineur</Text>
+              <Demineur></Demineur>
             </View>
             
     
