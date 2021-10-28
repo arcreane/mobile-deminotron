@@ -8,12 +8,15 @@ import * as SecureStore from 'expo-secure-store';
 function Demineur(props) {
 
     var length = 10
+    var nombreBombe = 10
 
     var [carre, setCarre] = useState("")
+    var [bombe, setBombe] = useState("")
+
     var renderItemCarre = ({item}) => {
         if(item.state!=="boom"){
             return (
-                <View style={{height:30, width:30, backgroundColor:"grey",margin:1}}></View>
+                <TouchableOpacity onPress={()=>Boom(item.identifier)} style={{height:30, width:30, backgroundColor:"grey",margin:1}}></TouchableOpacity>
             )
         }else{
             return (
@@ -25,13 +28,26 @@ function Demineur(props) {
         
     };
 
+    function Boom(index){
+        var tmpcarre = carre
+        
+        tmpcarre[index].state = "boom"
+        setCarre(tmpcarre)
+        alert(JSON.stringify(tmpcarre))
+    }
+
     useEffect(()=>{
+        let newBombe = []
+        for (var i=0;i<nombreBombe;i++){
+            newBombe = [...newBombe,...[Math.floor(Math.random()*(length*length)),]]
+        }
+
+        alert(JSON.stringify(newBombe))
+
         let newState = []
         for (var i=0;i<length;i++){
             for (var j=0;j<length;j++){
-                newState = [...newState,...[{state:"boom", identifier:j+(i*10)}]]
-    
-                
+                newState = [...newState,...[{state:"safe", identifier:j+(i*10)}]]
             }
         }
         setCarre(newState);
