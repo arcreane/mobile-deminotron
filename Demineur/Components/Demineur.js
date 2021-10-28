@@ -31,9 +31,9 @@ function Demineur(props) {
     function Boom(index){
         var tmpcarre = carre
         
-        tmpcarre[index].state = "boom"
+        //tmpcarre[index].state = "boom"
         setCarre(tmpcarre)
-        alert(JSON.stringify(tmpcarre))
+        alert(JSON.stringify(tmpcarre[index]))
     }
 
     useEffect(()=>{
@@ -44,12 +44,19 @@ function Demineur(props) {
 
         alert(JSON.stringify(newBombe))
 
+
         let newState = []
         for (var i=0;i<length;i++){
             for (var j=0;j<length;j++){
-                newState = [...newState,...[{state:"safe", identifier:j+(i*10)}]]
+                let id = j+(i*10)
+                newState = [...newState,...[{state:"safe",value:null, x:j+1, y:i+1, identifier:id}]]
             }
         }
+
+        newBombe.forEach(function(item){
+            newState[item].state = "boom"
+        });
+
         setCarre(newState);
     },[])
 
