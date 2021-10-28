@@ -11,38 +11,56 @@ function Demineur(props) {
     var nombreBombe = 10
 
     var [carre, setCarre] = useState("")
-    var [bombe, setBombe] = useState("")
+    var [forceUpdate, setForceUpdate] = useState(false)
+    var [bombe, setBombe] = useState([0])
 
-    var renderItemCarre = ({item}) => {
-        if(item.state!=="boom"){
+
+    var Bombe = ({state,index}) => {
+        //alert(typeof(bombe[0]))
+        if(state!="boom"){
             return (
-                <TouchableOpacity onPress={()=>Boom(item.identifier)} style={{height:30, width:30, backgroundColor:"grey",margin:1}}></TouchableOpacity>
+                <View></View>
             )
         }else{
-            return (
-                <View style={{height:30, width:30, backgroundColor:"grey",margin:1}}>
-                    <View style={{height:20, width:20,borderRadius:100, backgroundColor:"red",margin:5}}><Text>{item.identifier}</Text></View>
-                </View>
-            )
+            if(bombe.indexOf(index) == -1){
+                return (
+                    <View style={{height:20, width:20, backgroundColor:"#333",margin:5}}></View>
+                )
+            }else{
+                return (
+                    <View style={{height:20, width:20,borderRadius:100, backgroundColor:"red",margin:5}}></View>
+                )
+            }
         }
         
+    };
+
+    var renderItemCarre = ({item}) => {
+        return(
+            <TouchableOpacity onPress={()=>Boom(item.identifier)} style={{height:30, width:30, backgroundColor:"grey",margin:1}}>
+                <Bombe state={item.state} index={item.identifier}/>
+            </TouchableOpacity> 
+        )
+               
     };
 
     function Boom(index){
         var tmpcarre = carre
         
         tmpcarre[index].state = "boom"
+        //tmpcarre = [...tmpcarre,...[{state:"boom", identifier:101}]]
         setCarre(tmpcarre)
-        alert(JSON.stringify(tmpcarre))
+        setForceUpdate(true)
+        //alert(JSON.stringify(tmpcarre))
     }
-
+    
     useEffect(()=>{
         let newBombe = []
         for (var i=0;i<nombreBombe;i++){
-            newBombe = [...newBombe,...[Math.floor(Math.random()*(length*length)),]]
+            newBombe = [...newBombe,...[parseInt(Math.floor(Math.random()*(length*length)),10)]]
         }
 
-        alert(JSON.stringify(newBombe))
+        setBombe(newBombe)
 
         let newState = []
         for (var i=0;i<length;i++){
@@ -53,9 +71,14 @@ function Demineur(props) {
         setCarre(newState);
     },[])
 
+    useEffect(()=>{
+        if(forceUpdate)
+            setForceUpdate(false);
+    },[forceUpdate])
+
     var Grille = () => {
         return(
-                <FlatList data={carre} renderItem={renderItemCarre} keyExtractor = {item => item.identifier} numColumns="10"/>
+                <FlatList extraData={forceUpdate} data={carre} renderItem={renderItemCarre} keyExtractor = {item => item.identifier} numColumns="10"/>
             )
     };
 
