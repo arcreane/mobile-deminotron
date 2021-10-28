@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 
 
@@ -31,7 +32,7 @@ function Demineur(props) {
     function Boom(index){
         var tmpcarre = carre
         
-        //tmpcarre[index].state = "boom"
+        tmpcarre[index].state = "boom"
         setCarre(tmpcarre)
         alert(JSON.stringify(tmpcarre[index]))
     }
@@ -55,6 +56,32 @@ function Demineur(props) {
 
         newBombe.forEach(function(item){
             newState[item].state = "boom"
+        });
+
+
+        newState.forEach(function(item){
+            if(item.x == 0 || item.x == 9 || item.y == 0 || item.y == 9){ }
+            else{
+                let count = 0;
+                tx=item.x-1;
+                ty=item.y-1;
+
+                t=item.identifier-11;
+
+                for(i =0; i<=2; i++){
+                    for(j=0; j<=20; j+=10){
+                        if(tx == item.x && ty == item.y){
+                        }
+                        var tmpcarre = carre
+                        index = t+i+j;
+                        if(tmpcarre[index].state == "boom"){
+                            count++
+                        }
+                    }
+                }
+                //alert(count);
+                item.value = count;
+            }
         });
 
         setCarre(newState);
