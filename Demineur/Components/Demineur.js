@@ -7,24 +7,26 @@ import * as SecureStore from 'expo-secure-store';
 
 function Demineur(props) {
 
-    var length = 10
-    var nombreBombe = 10
+    let length = 10
+    let nombreBombe = 10
 
-    var [carre, setCarre] = useState("")
-    var [forceUpdate, setForceUpdate] = useState(false)
-    var [bombe, setBombe] = useState([0])
+    let [carre, setCarre] = useState("")
+    let [forceUpdate, setForceUpdate] = useState(false)
+    let [bombe, setBombe] = useState([0])
+
+    let [boom, setBoom] = useState(false)
 
 
-    var Bombe = ({state,index}) => {
+    let Bombe = ({state,Xcoordonates, Ycoordonates, value}) => {
         //alert(typeof(bombe[0]))
-        if(state!="boom"){
+        if(state == "NotClick"){
             return (
                 <View></View>
             )
         }else{
-            if(bombe.indexOf(index) == -1){
+            if(value != -1){
                 return (
-                    <View style={{height:20, width:20, backgroundColor:"#333",margin:5}}></View>
+                    <View style={{height:20, width:20, backgroundColor:"#333",margin:5}}><Text style={{marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto'}}>{value}</Text></View>
                 )
             }else{
                 return (
@@ -35,57 +37,115 @@ function Demineur(props) {
         
     };
 
-    var renderItemCarre = ({item}) => {
+
+    let renderItemCarre = ({item}) => {
         return(
             <TouchableOpacity onPress={()=>Boom(item.identifier)} style={{height:30, width:30, backgroundColor:"grey",margin:1}}>
-                <Bombe state={item.state} index={item.identifier}/>
+                <Bombe state={item.state} Xcoordonates={item.coordonates.x} Ycoordonates={item.coordonates.y} value={item.value}/>
             </TouchableOpacity> 
         )
                
     };
 
     function Boom(index){
-        var tmpcarre = carre
+        if(!boom){
+            let tmpcarre = carre
         
-        tmpcarre[index].state = "boom"
-        //tmpcarre = [...tmpcarre,...[{state:"boom", identifier:101}]]
-        setCarre(tmpcarre)
-        setForceUpdate(true)
-        //alert(JSON.stringify(tmpcarre))
+            if(tmpcarre[index].value == -1){
+                setBoom(true)
+                alert('BOOM !!!')
+            }
+            
+            tmpcarre[index].state = "Click"
+            setCarre(tmpcarre)
+            setForceUpdate(true)
+            //alert(JSON.stringify(tmpcarre))
+        }
     }
     
     useEffect(()=>{
-        let newBombe = []
-        for (var i=0;i<nombreBombe;i++){
-            newBombe = [...newBombe,...[parseInt(Math.floor(Math.random()*(length*length)),10)]]
-        }
+        loadGame()
+    },[])
 
-        setBombe(newBombe)
+    //ON GENERE LES CASES EN FONCTION DES BOMBES
+    useEffect(()=>{
+        //ON GENERE LES CASES AVEC LEUR VALEUR
+        let newCarre = []
+        for (let i=0;i<length;i++){
+            for (let j=0;j<length;j++){
+                let bombeValue = 0;
+                if(bombe.indexOf(i.toString() + ";" + j.toString()) != -1){
+                    bombeValue = -1
+                }else{
+                    if(bombe.indexOf((i-1).toString() + ";" + (j-1).toString()) != -1)
+                        bombeValue++
+                    
+                    if(bombe.indexOf((i).toString() + ";" + (j-1).toString()) != -1)
+                        bombeValue++
 
-        let newState = []
-        for (var i=0;i<length;i++){
-            for (var j=0;j<length;j++){
-                newState = [...newState,...[{state:"safe", identifier:j+(i*10)}]]
+                    if(bombe.indexOf((i+1).toString() + ";" + (j-1).toString()) != -1)
+                        bombeValue++
+
+                    if(bombe.indexOf((i-1).toString() + ";" + (j).toString()) != -1)
+                        bombeValue++
+
+                    if(bombe.indexOf((i+1).toString() + ";" + (j).toString()) != -1)
+                        bombeValue++
+
+                    if(bombe.indexOf((i-1).toString() + ";" + (j+1).toString()) != -1)
+                        bombeValue++
+
+                    if(bombe.indexOf((i).toString() + ";" + (j+1).toString()) != -1)
+                        bombeValue++
+
+                    if(bombe.indexOf((i+1).toString() + ";" + (j+1).toString()) != -1)
+                        bombeValue++
+                }
+
+                newCarre = [...newCarre,...[{state:"NotClick", value: bombeValue, identifier:j+(i*length), coordonates: {x:i, y:j}}]]
             }
         }
-        setCarre(newState);
-    },[])
+        setCarre(newCarre);
+        
+    },[bombe])
 
     useEffect(()=>{
         if(forceUpdate)
             setForceUpdate(false);
     },[forceUpdate])
 
-    var Grille = () => {
+    let Grille = () => {
         return(
-                <FlatList extraData={forceUpdate} data={carre} renderItem={renderItemCarre} keyExtractor = {item => item.identifier} numColumns="10"/>
+                <FlatList extraData={forceUpdate} data={carre} renderItem={renderItemCarre} keyExtractor = {item => item.identifier} numColumns={length}/>
             )
     };
+
+
+    function loadGame(){
+        setBoom(false)
+
+        //ON GENERE LES BOMBES
+        let Bombes = []
+        for (let i=0;i<=nombreBombe;i++){
+            do{
+                newBombe = [parseInt(Math.floor(Math.random()*(length)),10).toString() + ";" + parseInt(Math.floor(Math.random()*(length)),10).toString()]
+            } while (Bombes.indexOf(newBombe) != -1)
+
+            Bombes = [...Bombes,...newBombe]
+        }
+        setBombe(Bombes)
+
+        setForceUpdate(true)
+    }
 
    
     return (
         <View>
             <Grille></Grille>
+
+            <TouchableOpacity onPress={() => loadGame()} style={{height: 50, width: 200, backgroundColor: 'white', borderRadius: 100, marginTop: 30, marginLeft: 'auto', marginRight: 'auto'}}>
+                <Text style={{marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto'}}>Recommencer</Text>
+            </TouchableOpacity>
         </View>
     )    
 }
