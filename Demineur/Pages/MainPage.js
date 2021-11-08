@@ -95,7 +95,7 @@ function MainPage({ navigation, route }) {
                     <TopBarre navigation={navigation}/>
                 </View>
 
-                <Content/>
+                <Content/>  
 
                 <View style={styles.containerNavBarre}>
                     <TouchableOpacity activeOpacity={1} onPress={() => LoadShop()}>
