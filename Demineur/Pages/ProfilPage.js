@@ -23,21 +23,17 @@ function ProfilPage(props) {
                       marginRight:'auto',
                       marginTop:'3%',
                       marginLeft:'auto',
-                      fontSize:'25%'
-                      }}>[insérer pseudo joueur]</Text>
+                      }}>insérer pseudo joueur</Text>
 
     <View style={{flexDirection:'row', marginTop:'15%',}}>
                   <Text style={{
                     marginLeft:'5%',
                     
-                    fontSize:'15%',
                   }}>Informations Personelles</Text>
 
       <Text style={{
                     marginLeft:'30%',
-                    fontSize:'15%',
                     color:'blue',
-                    fontStyle:'italic',
                   }}>Modifer</Text>
                   </View>
                   
@@ -45,37 +41,31 @@ function ProfilPage(props) {
                   <Text style={{
                     marginLeft:'5%',
                     marginTop:'5%',
-                    fontSize:'15%',
                   }}>Nom :</Text>
 
                   <Text style={{
                     marginLeft:'5%',
                     marginTop:'5%',
-                    fontSize:'15%',
                   }}>Prénom :</Text>
 
 <Text style={{
                     marginLeft:'5%',
                     marginTop:'5%',
-                    fontSize:'15%',
                   }}>Pseudo :</Text>
 
 <Text style={{
                     marginLeft:'5%',
                     marginTop:'5%',
-                    fontSize:'15%',
                   }}>Date de Naissance :</Text>
 
 <Text style={{
                     marginLeft:'5%',
                     marginTop:'5%',
-                    fontSize:'15%',
                   }}>E-mail :</Text>
 
 <Text style={{
                     marginLeft:'5%',
                     marginTop:'5%',
-                    fontSize:'15%',
                   }}>Mot de Passe :</Text>
 
               </View> 
