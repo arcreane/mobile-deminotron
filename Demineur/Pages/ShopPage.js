@@ -1,13 +1,16 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import ShopList from '../Components/ShopList';
 
 function ShopPage(props) {
     
         return (
+            <View style={{position:'absolute',top:100}}>
+                <Text>Boutique</Text>
 
-            <View style={{position: 'absolute', top: 100}}>
-                <Text>Shop</Text>
+                <ShopList></ShopList>
+
             </View>
         )
     }
