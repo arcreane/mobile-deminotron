@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 
 
