@@ -35,7 +35,8 @@ function ProfilPage(props) {
                           marginLeft:'auto',
                           marginRight:'auto',
                           opacity: 0.6,
-                          backgroundColor: 'rgba(255, 255, 255, 0)'}} source={require('../Images/ProfilLogo.png')}/>
+                          backgroundColor: 'rgba(255, 255, 255, 0)',
+                          borderRadius: 50 }} source={{uri: Utilisateur.image}}/>
 
             <Text style={{
                       marginRight:'auto',
