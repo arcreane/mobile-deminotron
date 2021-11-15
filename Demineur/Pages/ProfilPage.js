@@ -1,8 +1,26 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import {Text, View, Image} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function ProfilPage(props) {
+
+  let [Utilisateur, setUtilisateur] = useState("");
+  let [UtilisateurId, setUtilisateurId] = useState(1);
+
+    useEffect(() => {
+
+        let mounted = true;
+           
+        fetch('https://hugocabaret.onthewifi.com/Deminotron/API/requetes/Utilisateur/GetInfo.php?id_utilisateur=' + UtilisateurId)
+        .then((response) => response.json())
+        .then((data) => {
+            if(mounted){
+              setUtilisateur(data)
+            }
+        }); 
+    
+        return () => mounted = false;
+    }, [UtilisateurId]);
     
     return (
 
@@ -17,13 +35,14 @@ function ProfilPage(props) {
                           marginLeft:'auto',
                           marginRight:'auto',
                           opacity: 0.6,
-                          backgroundColor: 'rgba(255, 255, 255, 0)'}} source={require('../Images/ProfilLogo.png')}/>
+                          backgroundColor: 'rgba(255, 255, 255, 0)',
+                          borderRadius: 50 }} source={{uri: Utilisateur.image}}/>
 
             <Text style={{
                       marginRight:'auto',
                       marginTop:'3%',
                       marginLeft:'auto',
-                      }}>insérer pseudo joueur</Text>
+                      }}>{Utilisateur.pseudo}</Text>
 
     <View style={{flexDirection:'row', marginTop:'15%',}}>
                   <Text style={{
@@ -51,11 +70,6 @@ function ProfilPage(props) {
 <Text style={{
                     marginLeft:'5%',
                     marginTop:'5%',
-                  }}>Pseudo :</Text>
-
-<Text style={{
-                    marginLeft:'5%',
-                    marginTop:'5%',
                   }}>Date de Naissance :</Text>
 
 <Text style={{
@@ -63,28 +77,8 @@ function ProfilPage(props) {
                     marginTop:'5%',
                   }}>E-mail :</Text>
 
-<Text style={{
-                    marginLeft:'5%',
-                    marginTop:'5%',
-                  }}>Mot de Passe :</Text>
-
               </View> 
     )
 }
-
-
-    
-
-
-
-async function getValue(){
-  var _resultId = await SecureStore.getItemAsync('UtilisateurId')
-  if(_resultId){
-      setUtilisateurId(_resultId)
-  }else{
-      setUtilisateurId("")
-  }
-} //Récupération de l'ID de la personne connecté pour accéder à son profil
-
 
 export default ProfilPage;
