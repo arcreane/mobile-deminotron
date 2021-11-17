@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, View, Image, TextInput, Text, TouchableOpacity, FlatList, ImageBackground } from 'react-native';
 import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStack';
@@ -9,11 +9,14 @@ import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStac
 function Demineur(props) {
 
     let length = 10
-    let nombreBombe = 10
 
     let [carre, setCarre] = useState("")
     let [forceUpdate, setForceUpdate] = useState(false)
     let [bombe, setBombe] = useState([0])
+
+    let [nombreBombe, setNombreBombe] = useState(10)
+
+    let [uncoveredCase, setUncoveredCase] = useState(0)
 
     let [boom, setBoom] = useState(false)
 
@@ -31,7 +34,11 @@ function Demineur(props) {
                 )
             }else{
                 return (
-                    <View style={{height:20, width:20,borderRadius:100, backgroundColor:"red",margin:5}}></View>
+                    <View style={{height:20, width:20,borderRadius:100, margin:5}}>
+                        <View style={{backgroundColor: 'red', height: 7, width: 7, borderRadius: 100, position: 'absolute', right: -1, top: 5}}></View>
+                        <View style={{backgroundColor: 'yellow', height: 5, width: 5, borderRadius: 100, position: 'absolute', right: 0, top: 6}}></View>
+                        <Image style={{transform: [{ rotate: '30deg' }],height: 20, width: 20, opacity: 0.6, backgroundColor: 'rgba(255, 255, 255, 0)', marginTop: 'auto', marginBottom: 'auto'}} source={require('../Images/BombeLogo.png')}/>
+                    </View>
                 )
             }
         }
@@ -48,9 +55,8 @@ function Demineur(props) {
 
     };
 
-    function Boom(index){
-        //alert(index)
-        
+    function Boom(index){       
+        setUncoveredCase(uncoveredCase + 1) 
         if(!boom){
             let tmpcarre = carre
 
@@ -65,14 +71,10 @@ function Demineur(props) {
             if(tmpcarre[index]['value'] == 0){
                 recursiveBoom(tmpcarre, index)
             }
-
-
-
             
             setCarre(tmpcarre)
             setForceUpdate(true)
             return;
-            //alert(JSON.stringify(tmpcarre))
         }
     }
 
@@ -86,6 +88,14 @@ function Demineur(props) {
         rightBoom(carre, index)
 
         topBoom(carre, index)
+
+        rightTopBoom(carre, index)
+
+        leftTopBoom(carre, index)
+
+        leftBottomBoom(carre, index)
+
+        rightBottomBoom(carre, index)
         
         return;
     }
@@ -93,7 +103,6 @@ function Demineur(props) {
     function bottomBoom(carre, index){
         if(carre[index]['coordonates'].x != (length-1) && carre[(carre[index]['coordonates'].x+1) + ";" + (carre[index]['coordonates'].y)]['state'] != "Click"){
             Boom((carre[index]['coordonates'].x+1) + ";" + (carre[index]['coordonates'].y))
-            
         }
         return;
     }
@@ -101,7 +110,6 @@ function Demineur(props) {
     function leftBoom(carre, index){
         if(carre[index]['coordonates'].y != 0 && carre[(carre[index]['coordonates'].x) + ";" + (carre[index]['coordonates'].y-1)]['state'] != "Click"){
             Boom((carre[index]['coordonates'].x) + ";" + (carre[index]['coordonates'].y-1))
-            
         }
         return;
     }
@@ -119,6 +127,43 @@ function Demineur(props) {
         }
         return;
     }
+
+    function rightTopBoom(carre, index){
+        if(carre[index]['coordonates'].y != (length-1) && carre[index]['coordonates'].x != 0 && carre[(carre[index]['coordonates'].x-1) + ";" + (carre[index]['coordonates'].y+1)]['state'] != "Click"){
+            Boom((carre[index]['coordonates'].x-1) + ";" + (carre[index]['coordonates'].y+1))
+        }
+        return;
+    }
+
+    function leftTopBoom(carre, index){
+        if(carre[index]['coordonates'].y != 0 && carre[index]['coordonates'].x != 0 && carre[(carre[index]['coordonates'].x-1) + ";" + (carre[index]['coordonates'].y-1)]['state'] != "Click"){
+            Boom((carre[index]['coordonates'].x-1) + ";" + (carre[index]['coordonates'].y-1))
+        }
+        return;
+    }
+
+    function leftBottomBoom(carre, index){
+        if(carre[index]['coordonates'].y != 0 && carre[index]['coordonates'].x != (length-1) && carre[(carre[index]['coordonates'].x+1) + ";" + (carre[index]['coordonates'].y-1)]['state'] != "Click"){
+            Boom((carre[index]['coordonates'].x+1) + ";" + (carre[index]['coordonates'].y-1))
+        }
+        return;
+    }
+
+    function rightBottomBoom(carre, index){
+        if(carre[index]['coordonates'].y != (length-1) && carre[index]['coordonates'].x != (length-1) && carre[(carre[index]['coordonates'].x+1) + ";" + (carre[index]['coordonates'].y+1)]['state'] != "Click"){
+            Boom((carre[index]['coordonates'].x+1) + ";" + (carre[index]['coordonates'].y+1))
+        }
+        return;
+    }
+
+    useEffect(()=>{
+        //alert(uncoveredCase)
+
+        if((uncoveredCase + nombreBombe) == (length*length)){
+            setBoom(true)
+            alert('Bravo !!  vous avez découvert toutes les mines !!')
+        }
+    },[uncoveredCase])
 
     useEffect(()=>{
         loadGame()
@@ -171,6 +216,10 @@ function Demineur(props) {
             setForceUpdate(false);
     },[forceUpdate])
 
+    useEffect(()=>{
+        loadGame()
+    },[nombreBombe])
+
     let Grille = () => {
         return(
                 <FlatList extraData={forceUpdate} data={Object.entries(carre)} renderItem={renderItemCarre} keyExtractor = {item => item[0]} numColumns={length}/>
@@ -195,7 +244,6 @@ function Demineur(props) {
         setForceUpdate(true)
     }
 
-
     return (
         <View>
             <Grille></Grille>
@@ -203,6 +251,27 @@ function Demineur(props) {
             <TouchableOpacity onPress={() => loadGame()} style={{height: 50, width: 200, backgroundColor: 'white', borderRadius: 100, marginTop: 30, marginLeft: 'auto', marginRight: 'auto'}}>
                 <Text style={{marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto'}}>Recommencer</Text>
             </TouchableOpacity>
+
+
+            <View style={{marginTop: 30, marginLeft: 'auto', marginRight: 'auto', flexDirection: 'row'}}>
+                <Text style={{margin:4}}>Nombre de bombe : {nombreBombe}</Text>
+                {/* <TextInput keyboardType="numeric" value={nombreBombe} onChangeText={setNombreBombe} placeholder={"Nombre de Bombe"}/> */}
+            </View>
+
+            <View style={{margin: 0, flexDirection: 'row'}}>
+                <TouchableOpacity onPress={() => setNombreBombe(10)} style={{height: 50, width: 80, backgroundColor: 'white', borderRadius: 100, marginTop: 30, marginLeft: 'auto', marginRight: 'auto'}}>
+                    <Text style={{marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto'}}>Easy</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => setNombreBombe(20)} style={{height: 50, width: 80, backgroundColor: 'white', borderRadius: 100, marginTop: 30, marginLeft: 'auto', marginRight: 'auto'}}>
+                    <Text style={{marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto'}}>Normal</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => setNombreBombe(30)} style={{height: 50, width: 80, backgroundColor: 'white', borderRadius: 100, marginTop: 30, marginLeft: 'auto', marginRight: 'auto'}}>
+                    <Text style={{marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto'}}>Hard</Text>
+                </TouchableOpacity>
+            </View>
+            
         </View>
     )
 }
