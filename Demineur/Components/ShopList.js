@@ -39,20 +39,22 @@ function ShopList(props){
 
 
     function buyItem(item) {
-        alert("vous avez acheté"+(item[1].nom))
+        alert("vous avez acheté "+(item[1].nom))
     }
 
     // returne l
     return (
-        <FlatList style={{padding:15}} data={Object.entries(objects)} renderItem={renderItem} keyExtractor = {item => item.id_obj} numColumns={2}/>
+        <FlatList style={{padding:15}} data={Object.entries(objects)} renderItem={renderItem} keyExtractor = {item => item.id_obj} numColumns={3}/>
     )
 
 }
 
 const styles = StyleSheet.create({
+
     container:{
             height:150,
             width:100,
+
 
 
 
