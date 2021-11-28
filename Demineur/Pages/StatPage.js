@@ -10,11 +10,11 @@ function StatPage(props) {
     
   let [Utilisateur, setUtilisateur] = useState("");
   let [UtilisateurId, setUtilisateurId] = useState(1);
-
+  //Apelle lors du chargement de la page
   useEffect(() => {
 
     let mounted = true;
-       
+  //Apelle a l'API
     fetch('https://hugocabaret.onthewifi.com/Deminotron/API/requetes/Utilisateur/GetInfo.php?id_utilisateur=' + UtilisateurId)
     .then((response) => response.json())
     .then((data) => { let stat = {
@@ -28,7 +28,7 @@ function StatPage(props) {
     return () => mounted = false;
 }, [UtilisateurId]);
 
-
+  //Affichage des statistiques
         return (
           
 

@@ -8,7 +8,7 @@ function ShopPage(props) {
         return (
             <View style={{position:'absolute',top:100}}>
                 <Text style={{margin:35,marginBottom:5}}>Boutique :</Text>
-
+{/* apelle du component "shoplist" */}
                 <ShopList></ShopList>
 
             </View>

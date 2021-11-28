@@ -1,3 +1,4 @@
+//Convertion des secondes en heure
 export default function ToTime(secondes) {
     var nbheures=0;
     var nbminutes=0;

@@ -11,13 +11,7 @@ import ProfilPage from '../Pages/ProfilPage';
 
 function MainPage({ navigation, route }) {
 
-    var { _isConnected } = ""
-    try {
-        _isConnected = route.params._isConnected;
-    } catch (error) {
-        _isConnected = false;
-    }
-    
+   // Première page à charger
     var toLoad = "demineur"
 
     var [utilisateurId, setUtilisateurId] = useState("");
@@ -25,7 +19,8 @@ function MainPage({ navigation, route }) {
     var [stat, setStat] = useState(false);
     var [shop, setShop] = useState(false);
     var [profil, setProfil] = useState(false);
-
+    // Permet de charger la page demandée
+    // La fonction useEffect est appelée à chaque fois que la variable toLoad change
     useEffect(() => {
         if(toLoad == "demineur"){
             LoadDemineur()
@@ -42,24 +37,7 @@ function MainPage({ navigation, route }) {
     }, [toLoad])
     
 
-    
-
-    async function getValue(){
-        var _resultId = await SecureStore.getItemAsync('UtilisateurId')
-        if(_resultId){
-            setUtilisateurId(_resultId)
-        }else{
-            setUtilisateurId("")
-        }
-    }
-
-
-    useEffect(() => {
-        //getValue()
-
-    }, [utilisateurId]);
-
-
+    // Structure de la single page
     var Content = () => {
         if(demineur){
             return(
@@ -87,7 +65,7 @@ function MainPage({ navigation, route }) {
 
         
     }
-    
+        // Affichage global de l'application
         return (
             <View>
 
@@ -96,7 +74,7 @@ function MainPage({ navigation, route }) {
                 </View>
 
                 <Content/>  
-
+            {/* navbar  */}
                 <View style={styles.containerNavBarre}>
                     <TouchableOpacity activeOpacity={1} onPress={() => LoadShop()}>
                         <Image style={{height: 40, width: 40, opacity: 0.6, backgroundColor: 'rgba(255, 255, 255, 0)', marginTop: 'auto', marginBottom: 'auto'}} source={require('../Images/ShopLogo.png')}/>

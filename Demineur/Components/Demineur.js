@@ -20,7 +20,7 @@ function Demineur(props) {
 
     let [boom, setBoom] = useState(false)
 
-
+    //Affichage de la bombe en fonction de son état
     let Bombe = ({state, value}) => {
         //alert(typeof(bombe[0]))
         if(state == "NotClick"){
@@ -45,7 +45,7 @@ function Demineur(props) {
 
     };
 
-
+    //Affichage d'une seul case du démineur 
     let renderItemCarre = ({item}) => {
         return(
             <TouchableOpacity onPress={()=>Boom(item[0])} style={{height:30, width:30, backgroundColor:"grey",margin:1}}>
@@ -54,8 +54,10 @@ function Demineur(props) {
         )
 
     };
-
-    function Boom(index){       
+    // Si la valeur de la case est = -1 alors c'est une bombe, si elle est = 0 ca veut dire qu'il n'y aucune bombe autour, 
+    // donc on apelle la fonction récursive, sinon on affiche le nombre de bombe autour
+    function Boom(index){    
+        //Déterminer le nombre de cases découvertes   
         setUncoveredCase(uncoveredCase + 1) 
         if(!boom){
             let tmpcarre = carre
@@ -73,12 +75,13 @@ function Demineur(props) {
             }
             
             setCarre(tmpcarre)
+            //Forcer le rafraichissement du démineur
             setForceUpdate(true)
             return;
         }
     }
 
-
+// Fonction récursive des nombres de bombes autour des cases cliqués
     function recursiveBoom(carre, index){
         
         bottomBoom(carre, index)
@@ -99,6 +102,8 @@ function Demineur(props) {
         
         return;
     }
+
+    //On vérifie que la case cliquée n'est pas sur une extrimité sinon on active la fonction récursive
 
     function bottomBoom(carre, index){
         if(carre[index]['coordonates'].x != (length-1) && carre[(carre[index]['coordonates'].x+1) + ";" + (carre[index]['coordonates'].y)]['state'] != "Click"){
@@ -155,7 +160,7 @@ function Demineur(props) {
         }
         return;
     }
-
+    //Lorsque toutes les cases sont découvertes on fait gagner le joueur
     useEffect(()=>{
         //alert(uncoveredCase)
 
@@ -164,7 +169,7 @@ function Demineur(props) {
             alert('Bravo !!  vous avez découvert toutes les mines !!')
         }
     },[uncoveredCase])
-
+    // Rechargement de la page, on relance une partie
     useEffect(()=>{
         loadGame()
     },[])
@@ -219,7 +224,7 @@ function Demineur(props) {
     useEffect(()=>{
         loadGame()
     },[nombreBombe])
-
+    //Affichage du démineur
     let Grille = () => {
         return(
                 <FlatList extraData={forceUpdate} data={Object.entries(carre)} renderItem={renderItemCarre} keyExtractor = {item => item[0]} numColumns={length}/>
@@ -243,9 +248,10 @@ function Demineur(props) {
 
         setForceUpdate(true)
     }
-
+    //Affichage général du démineur
     return (
         <View>
+            {/* Démineur */}
             <Grille></Grille>
 
             <TouchableOpacity onPress={() => loadGame()} style={{height: 50, width: 200, backgroundColor: 'white', borderRadius: 100, marginTop: 30, marginLeft: 'auto', marginRight: 'auto'}}>
@@ -257,7 +263,7 @@ function Demineur(props) {
                 <Text style={{margin:4}}>Nombre de bombe : {nombreBombe}</Text>
                 {/* <TextInput keyboardType="numeric" value={nombreBombe} onChangeText={setNombreBombe} placeholder={"Nombre de Bombe"}/> */}
             </View>
-
+        {/* Selection du mode de jeu */}
             <View style={{margin: 0, flexDirection: 'row'}}>
                 <TouchableOpacity onPress={() => setNombreBombe(10)} style={{height: 50, width: 80, backgroundColor: 'white', borderRadius: 100, marginTop: 30, marginLeft: 'auto', marginRight: 'auto'}}>
                     <Text style={{marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto'}}>Easy</Text>
