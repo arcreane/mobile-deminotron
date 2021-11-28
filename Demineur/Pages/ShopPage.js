@@ -7,7 +7,7 @@ function ShopPage(props) {
     
         return (
             <View style={{position:'absolute',top:100}}>
-                <Text>Boutique</Text>
+                <Text style={{margin:35,marginBottom:5}}>Boutique :</Text>
 
                 <ShopList></ShopList>
 
