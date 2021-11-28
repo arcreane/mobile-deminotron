@@ -27,11 +27,11 @@ function ShopList(props){
 
     let renderItem = ({item}) => {
         return(
-            <TouchableOpacity onPress={()=>buyItem(item)} style={{height:100, width:100,margin:1}}>
+            <TouchableOpacity onPress={()=>buyItem(item)} style={styles.container}>
                 <View>
-                    <Image style={{width:75,height:75 }} source={{uri:item[1].image}}></Image>
-                    <Text style={{zIndex:'1'}}>{item[1].nom}</Text>
-                    <Text style={{zIndex:'1'}}>{item[1].prix}</Text>
+                    <Image style={styles.image} source={{uri:item[1].image}}></Image>
+                    <Text style={styles.textNom}>{item[1].nom}</Text>
+                    <Text style={styles.textPrix}>{item[1].prix}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -39,15 +39,52 @@ function ShopList(props){
 
 
     function buyItem(item) {
-        alert(JSON.stringify(item[1]))
+        alert("vous avez acheté "+(item[1].nom))
     }
 
     // returne l
     return (
-        <FlatList style={{padding:15}} data={Object.entries(objects)} renderItem={renderItem} keyExtractor = {item => item.id_obj} numColumns={2}/>
+        <FlatList style={{padding:15}} data={Object.entries(objects)} renderItem={renderItem} keyExtractor = {item => item.id_obj} numColumns={3}/>
     )
 
 }
+
+const styles = StyleSheet.create({
+
+    container:{
+            height:150,
+            width:100,
+
+
+
+
+    },
+    image:{width:75,
+           height:75,
+           borderRadius:19,
+           margin:15, 
+           marginBottom:20,
+
+    
+    
+    },
+    textNom:{zIndex:1,
+            marginTop:-15, 
+            marginLeft:10,
+  
+ 
+ 
+ },
+    textPrix:{zIndex:1,
+           marginTop:5, 
+           marginLeft:10,
+           marginBottom:30,
+
+
+
+}
+
+})
 
 export default ShopList
 
