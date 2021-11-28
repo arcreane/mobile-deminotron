@@ -1,3 +1,3 @@
-function WinRate(nbparties , nbvictoires){
+export default function WinRate(nbparties , nbvictoires){
     return nbparties/nbvictoires;
 }
