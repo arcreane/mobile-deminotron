@@ -6,11 +6,11 @@ function ProfilPage(props) {
 
   let [Utilisateur, setUtilisateur] = useState("");
   let [UtilisateurId, setUtilisateurId] = useState(1);
-
+    // Est apellé lorsque la valeur id est set
     useEffect(() => {
 
         let mounted = true;
-           
+      // Apelle à l'API pour récuperer les infos de l'utilisateur
         fetch('https://hugocabaret.onthewifi.com/Deminotron/API/requetes/Utilisateur/GetInfo.php?id_utilisateur=' + UtilisateurId)
         .then((response) => response.json())
         .then((data) => {
@@ -21,7 +21,7 @@ function ProfilPage(props) {
     
         return () => mounted = false;
     }, [UtilisateurId]);
-    
+      // Affichage des informations de l'utilisateur
     return (
 
         <View style={{position: 'absolute', 

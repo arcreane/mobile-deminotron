@@ -1,7 +1,8 @@
+//Convertion des secondes en heure
 export default function ToTime(secondes) {
     var nbheures=0;
     var nbminutes=0;
-    
+    //on recupère des valeurs en secondes et on transforme ça en affichage "hms"
     var resultat = null;
     if (secondes>=3600){
         nbheures = ~~(secondes/3600);

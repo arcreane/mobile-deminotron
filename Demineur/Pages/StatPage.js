@@ -7,16 +7,17 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 function StatPage(props) {
-    
+    // creation de variables
   let [Utilisateur, setUtilisateur] = useState("");
   let [UtilisateurId, setUtilisateurId] = useState(1);
-
+  //Apelle lors du chargement de la page
   useEffect(() => {
 
     let mounted = true;
-       
+  //Apelle a l'API
     fetch('https://hugocabaret.onthewifi.com/Deminotron/API/requetes/Utilisateur/GetInfo.php?id_utilisateur=' + UtilisateurId)
     .then((response) => response.json())
+    //on assigne des valeurs dans le disctionnaire
     .then((data) => { let stat = {
         "Winrate":winrate(89,15),"Partie_Gagnee": 15, "Parties_Perdues" : 89, "Temps_de_jeu": ToTime(8721),"Temps_Moyen_Par_Parties":ToTime(459)
     }
@@ -28,10 +29,10 @@ function StatPage(props) {
     return () => mounted = false;
 }, [UtilisateurId]);
 
-
+  //Affichage des statistiques
         return (
           
-
+            //on fait le style de la page et on affiche nos valeures
             <View style={{position: 'absolute', top: 100, width: '100%'}}>
                 <Text style={{
                   marginRight:'auto',
