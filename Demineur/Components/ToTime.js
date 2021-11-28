@@ -1,5 +1,4 @@
-
-function ToTime(secondes) {
+export default function ToTime(secondes) {
     var nbheures=0;
     var nbminutes=0;
     
