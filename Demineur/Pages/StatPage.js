@@ -32,32 +32,43 @@ function StatPage(props) {
         return (
           
 
-            <View style={{position: 'absolute', top: 100}}>
-                <Text>Statistiques :</Text>
+            <View style={{position: 'absolute', top: 100, width: '100%'}}>
+                <Text style={{
+                  marginRight:'auto',
+                  marginTop:'10%',
+                  marginLeft:'auto',
+                  fontSize : 32,
+                  textDecorationLine: 'underline',
+                }}>Statistiques :</Text>
                 <Text style={{
                       marginRight:'auto',
-                      marginTop:'3%',
+                      marginTop:'6%',
                       marginLeft:'auto',
+                      fontSize : 25,
                       }}>Taux de victoire: {Utilisateur.Winrate}</Text>
                       <Text style={{
                       marginRight:'auto',
                       marginTop:'3%',
                       marginLeft:'auto',
+                      fontSize : 25,
                       }}>Parties gagnées: {Utilisateur.Partie_Gagnee}</Text>
                       <Text style={{
                       marginRight:'auto',
                       marginTop:'3%',
                       marginLeft:'auto',
+                      fontSize : 25,
                       }}>Parties perdues: {Utilisateur.Parties_Perdues}</Text>
                       <Text style={{
                       marginRight:'auto',
                       marginTop:'3%',
                       marginLeft:'auto',
+                      fontSize : 25,
                       }}>Temps moyen par parties: {Utilisateur.Temps_Moyen_Par_Parties}</Text>
                       <Text style={{
                       marginRight:'auto',
                       marginTop:'3%',
                       marginLeft:'auto',
+                      fontSize : 25,
                       }}>Temps de jeu total: {Utilisateur.Temps_de_jeu}</Text>
             </View>
         )
